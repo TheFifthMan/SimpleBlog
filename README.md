@@ -1,33 +1,51 @@
 # SimpleBlog 
 基于django搭建的简单博客系统。
-# chapter2 - 首页视图
-## urls
+# chapter3 - 功能实现
+前面实现了路由和视图的配置，这里实现一下功能
 
+## 1-展示的功能
 ```
-# app/urls.py
-
-from django.urls import path
-from .views import IndexView
-
-app_name = 'app'
-urlpatterns = [
-    path('',IndexView.as_view(),name='index')
+1. 静态文件
+所有的html和静态文件都要放在app里面。这样就无需做任何的处理，否则需要如下处理
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [], # 这里指明templates的位置
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                ...
+            ],
+        },
+    },
 ]
 
-# blog/urls.py
+STATIC_URL = '/static/' # 这里指明static的位置
+
+2. 模板继承
+{% extends "base.html" %}
+{% block content %}{% endblock %}
+
+3. 静态文件导入
+{% load staticfiles %}
+{% static 'css/xxx.css' %}
+```
+## 后台管理功能
+```
+python manage.py createsuperuser
+
+# app/admin.py
 from django.contrib import admin
-from django.urls import path,include
+from .models import Category,Post,Tag
+# Register your models here.
+class PostAdmin(admin.ModelAdmin):
+    list_display = ['title','author','excerpt','category','created_timestamp','modified_timestamp']
 
-urlpatterns = [
-    path('admin/', admin.site.urls),
-    path(r'',include('app.urls')),
-]
+admin.site.register(Category)
+admin.site.register(Post,PostAdmin)
+admin.site.register(Tag)
 
 ```
-## views
-```
-class IndexView(ListView):
-    model = Post
-    template_name = 'blog/index.html'
-    context_object_name = 'posts'
-```
+## 文章详情页
+
+
