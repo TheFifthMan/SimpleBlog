@@ -1,0 +1,51 @@
+{% load tags %}
+<aside class="col-md-4">
+    <div class="widget widget-recent-posts">
+        <h3 class="widget-title">最新文章</h3>
+        <ul>
+            {% get_recent_post as get_recent_post_list %}
+            {% for post in get_recent_post_list %}
+            <li>
+                <a href="#">{{ post }}</a>
+            </li>
+            {% empty %}
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="widget widget-archives">
+        <h3 class="widget-title">归档</h3>
+        <ul>
+            {% archives as get_archives %}
+            {% for archive in get_archives %}
+            <li>
+                <a href="#">{{ archive }}</a>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="widget widget-category">
+        <h3 class="widget-title">分类</h3>
+        <ul>
+            {% get_categories as get_category_list %}
+            {% for category in get_category_list %}
+            <li>
+                <a href="#">{{ category }}<span class="post-count">(13)</span></a>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="widget widget-tag-cloud">
+        <h3 class="widget-title">标签云</h3>
+        <ul>
+            <li>
+                <a href="#">Django</a>
+            </li>
+           
+        </ul>
+    </div>
+    <div class="rss">
+        <a href=""><span class="ion-social-rss-outline"></span> RSS 订阅</a>
+    </div>
+</aside>
