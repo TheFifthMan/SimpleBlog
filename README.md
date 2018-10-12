@@ -1,54 +1,15 @@
 # SimpleBlog 
 基于django搭建的简单博客系统。
-# chapter3 - 功能实现
-前面实现了路由和视图的配置，这里实现一下功能
-
-## 1-展示的功能
+# chapter4
+## 注册自定义标签
+注册自定义标签有三个点需要遵守
+1. INSTALL_APP 里面要有这个app的名字
+2. 在app里面新建一个包：templatetags
+3. 在包里面新建py文件
 ```
-1. 静态文件
-所有的html和静态文件都要放在app里面。这样就无需做任何的处理，否则需要如下处理
-TEMPLATES = [
-    {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [], # 这里指明templates的位置
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                ...
-            ],
-        },
-    },
-]
+register = template.Library()   #register的名字是固定的,不可改变
 
-STATIC_URL = '/static/' # 这里指明static的位置
-
-2. 模板继承
-{% extends "base.html" %}
-{% block content %}{% endblock %}
-
-3. 静态文件导入
-{% load staticfiles %}
-{% static 'css/xxx.css' %}
+@register.simple_tag
+def get_recent_post(num=5):
+    return Post.objects.all().order_by('-created_timestamp')[:num]
 ```
-## 后台管理功能
-```
-python manage.py createsuperuser
-
-# app/admin.py
-from django.contrib import admin
-from .models import Category,Post,Tag
-# Register your models here.
-class PostAdmin(admin.ModelAdmin):
-    list_display = ['title','author','excerpt','category','created_timestamp','modified_timestamp']
-
-admin.site.register(Category)
-admin.site.register(Post,PostAdmin)
-admin.site.register(Tag)
-
-```
-## 文章详情页
-```
-get_object_or_404(models,pk=pk)
-这个不是类的功能，是shortcut的功能
-```
-
