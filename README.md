@@ -47,5 +47,8 @@ admin.site.register(Tag)
 
 ```
 ## 文章详情页
-
+```
+get_object_or_404(models,pk=pk)
+这个不是类的功能，是shortcut的功能
+```
 

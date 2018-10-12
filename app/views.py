@@ -1,4 +1,4 @@
-from django.shortcuts import render,reverse
+from django.shortcuts import render,reverse,get_object_or_404
 from django.views.generic import ListView,View
 import markdown 
 from .models import  Post
@@ -11,8 +11,8 @@ class IndexView(ListView):
 
 class DetailView(View):
     def get(self,request,pk):
-        post = Post.objects.get_object_or_404(pk=pk)
-        post.body = markdown.markdown(post.body,
+        post = get_object_or_404(Post,pk=pk)
+        post.content = markdown.markdown(post.content,
                                       extensions=[
                                          'markdown.extensions.extra',
                                          'markdown.extensions.codehilite',
