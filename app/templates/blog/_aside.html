@@ -6,7 +6,7 @@
             {% get_recent_post as get_recent_post_list %}
             {% for post in get_recent_post_list %}
             <li>
-                <a href="#">{{ post }}</a>
+                <a href="{% url 'app:detail' post.pk %}">{{ post }}</a>
             </li>
             {% empty %}
             {% endfor %}
@@ -18,7 +18,7 @@
             {% archives as get_archives %}
             {% for archive in get_archives %}
             <li>
-                <a href="#">{{ archive }}</a>
+                <a href="{% url 'app:archives' archive.year archive.month %}">{{ archive }}</a>
             </li>
             {% endfor %}
         </ul>
@@ -30,7 +30,7 @@
             {% get_categories as get_category_list %}
             {% for category in get_category_list %}
             <li>
-                <a href="#">{{ category }}<span class="post-count">(13)</span></a>
+                <a href="{% url 'app:category' category.pk %}">{{ category }}<span class="post-count">(13)</span></a>
             </li>
             {% endfor %}
         </ul>
