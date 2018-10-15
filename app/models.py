@@ -53,4 +53,23 @@ class Post(models.Model):
         db_table = 'post'
         verbose_name = '文章'
         verbose_name_plural = verbose_name
+        ordering = ['-created_timestamp']
+
+class Comment(models.Model):
+    username = models.CharField(max_length=50,verbose_name='username')
+    email = models.EmailField(verbose_name='email')
+    url = models.URLField(verbose_name="url",blank=True, null=True)
+    content = models.TextField(verbose_name="comment")
+    created_timestamp = models.DateTimeField(auto_now_add=True)
+    article = models.ForeignKey('app.Post',on_delete=models.CASCADE,related_name="comment",verbose_name="对应的文章")
+
+
+    def __str__(self):
+        return self.content
+    
+    class Meta:
+        db_table = "comment"
+        verbose_name = "评论"
+        verbose_name_plural = verbose_name
+
 
