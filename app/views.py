@@ -20,6 +20,7 @@ class DetailView(View):
                                          'markdown.extensions.codehilite',
                                          'markdown.extensions.toc',
                                       ])
+        post.increase_views()
         comments = post.comment.all().order_by('-created_timestamp') 
         return render(request,'blog/single.html',{"post":post,"comments":comments,"form":form})
 

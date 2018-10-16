@@ -39,6 +39,11 @@ class Post(models.Model):
     category = models.ForeignKey('Category',on_delete=models.CASCADE,related_name='posts',verbose_name="种类")
     tags = models.ManyToManyField('Tag',blank=True,verbose_name='文章标签')
     author = models.ForeignKey(User,on_delete=models.CASCADE,related_name='posts',verbose_name='作者')
+    views = models.IntegerField(default=0,verbose_name="阅读量")
+
+    def increase_views(self):
+        self.views += 1
+        self.save(update_fields=['views'])
 
     def __str__(self):
         return self.title

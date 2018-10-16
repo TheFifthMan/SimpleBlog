@@ -1,6 +1,7 @@
 from django.urls import path,re_path
 from .views import IndexView,DetailView,ArchivesView,CategoriesView
 
+# 有时候其他的app也会出现detail这样的名字，这个时候幼加一个app_name加以区别，用法为app:detail
 app_name = 'app'
 urlpatterns = [
     path('',IndexView.as_view(),name='index'),
