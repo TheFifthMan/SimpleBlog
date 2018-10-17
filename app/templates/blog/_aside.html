@@ -30,7 +30,7 @@
             {% get_categories as get_category_list %}
             {% for category in get_category_list %}
             <li>
-                <a href="{% url 'app:category' category.pk %}">{{ category }}<span class="post-count">(13)</span></a>
+                <a href="{% url 'app:category' category.pk %}">{{ category }}<span class="post-count">({{ category.num }})</span></a>
             </li>
             {% endfor %}
         </ul>
@@ -38,12 +38,17 @@
 
     <div class="widget widget-tag-cloud">
         <h3 class="widget-title">标签云</h3>
+        {% get_tags as get_tag_list %}
+        {% for tag in get_tag_list %}
         <ul>
             <li>
-                <a href="#">Django</a>
+                <a href="{% url 'app:tag' tag.pk %}">{{ tag.name }}</a>
             </li>
            
         </ul>
+        {% empty %}
+        None
+        {% endfor %}
     </div>
     <div class="rss">
         <a href=""><span class="ion-social-rss-outline"></span> RSS 订阅</a>

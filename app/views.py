@@ -1,7 +1,7 @@
 from django.shortcuts import render,reverse,get_object_or_404,redirect,reverse
 from django.views.generic import ListView,View
 import markdown 
-from .models import  Post,Category,Comment
+from .models import  Post,Category,Comment,Tag
 from .forms import CommentModelForm
 # Create your views here.
 class IndexView(ListView):
@@ -56,3 +56,8 @@ class CategoriesView(View):
         posts = Post.objects.filter(category=category).all()
         return render(request,'blog/index.html',{'posts':posts})
 
+class TagsView(View):
+    def get(self,request,pk):
+        tags = get_object_or_404(Tag,pk=pk)
+        posts = Post.objects.filter(tags=tags).all()
+        return render(request,'blog/index.html',{'posts':posts})

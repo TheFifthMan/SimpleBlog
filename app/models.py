@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.shortcuts import reverse
+import markdown
 
 
 # Create your models here.
@@ -37,7 +38,7 @@ class Post(models.Model):
     modified_timestamp = models.DateTimeField(blank=True,verbose_name="修改时间")
     excerpt = models.CharField(max_length=250,blank=True,null=True,verbose_name='内容摘要')
     category = models.ForeignKey('Category',on_delete=models.CASCADE,related_name='posts',verbose_name="种类")
-    tags = models.ManyToManyField('Tag',blank=True,verbose_name='文章标签')
+    tags = models.ManyToManyField('Tag',blank=True,verbose_name='文章标签',related_name='posts')
     author = models.ForeignKey(User,on_delete=models.CASCADE,related_name='posts',verbose_name='作者')
     views = models.IntegerField(default=0,verbose_name="阅读量")
 
@@ -51,7 +52,16 @@ class Post(models.Model):
 
     def get_absolute_url(self):
         return reverse("app:detail", kwargs={"pk": self.pk})
-    
+
+    def save(self,*args, **kwargs):
+        if not self.excerpt:
+            md = markdown.Markdown(extensions=[
+                'markdown.extensions.extra',
+                'markdown.extensions.codehilite',
+            ])
+            self.excerpt = strip_tags(md.convert(self.body))[:54]
+        
+        super(Post, self).save(*args, **kwargs)
 
 
     class Meta:
